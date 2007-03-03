@@ -68,6 +68,7 @@ LIBRARY        eikcoctl.lib bafl.lib efsrv.lib
 LIBRARY        estlib.lib egul.lib aknicon.lib fbscli.lib
 LIBRARY        mediaclientaudio.lib DrmAudioPlayUtility.lib 
 LIBRARY        PlatformEnv.lib CommonDialogs.lib aknskins.lib MGFetch.lib
+LIBRARY        ws32.lib
 
 
 LANG 01 02 05
