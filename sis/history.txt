@@ -1,0 +1,17 @@
+History of EggTimer
+
+Version 1.1 (03/03/2007)
+--------------------------
+[fix]    Added mask image for volume indicator, to avoid wrong display on dark
+         themes.
+[improv] Changed dialog used to select the notification schema. The new dialog
+         includes all audio files from both the phone memory and the memory card.
+[other]  Uploaded code to Google Code.
+[other]  Added history file.
+
+Version 1.0 (01/03/2007)
+--------------------------
+First version of EggTimer.
+Released only internally for beta testing.
+
+
