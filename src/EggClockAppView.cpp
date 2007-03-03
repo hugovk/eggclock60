@@ -451,17 +451,22 @@ void CEggClockAppView::DoTimerFired()
 
 void CEggClockAppView::PlayNotificationL()
 {
+  // Start flashing
   if (m_pFlashTimer && !m_pFlashTimer->IsActive())
   {
     m_bFlash = ETrue;
     m_pFlashTimer->Start(FLASH_TIME, FLASH_TIME, TCallBack(CEggClockAppView::FlashTimerFired, this));
   }
+  // Start notification
   if (m_pFilePlayer && m_iAudioState == eAudioReady)
   {
     m_pFilePlayer->SetVolume((m_pFilePlayer->MaxVolume() * m_iVolume) / MAX_VOLUME);
     m_pFilePlayer->Play();
     m_iAudioState = eAudioPlaying;
   }
+  
+  // Bring application to foreground
+  CEikonEnv::Static()->RootWin().SetOrdinalPosition(0);
 }
 
 TInt CEggClockAppView::FlashTimerFired(TAny* aPtr)
