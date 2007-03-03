@@ -1,0 +1,78 @@
+/*
+============================================================================
+ Name        : EggClock.rss
+ Author      : Michele Berionne
+ Version     :
+ Copyright   : 
+ Description : Project specification file for client
+============================================================================
+*/
+
+TARGET            EggClock.exe
+TARGETTYPE        exe
+UID               0x0 0xA00026FC
+EPOCSTACKSIZE     0x5000
+
+SOURCEPATH        ..\src
+SOURCE            EggClock.cpp
+SOURCE            EggClockApplication.cpp
+SOURCE            EggClockAppView.cpp
+SOURCE            EggClockAppUi.cpp
+SOURCE            EggClockDocument.cpp
+
+SOURCEPATH        ..\data
+
+START RESOURCE    EggClock.rss
+HEADER
+TARGETPATH        \resource\apps
+END //RESOURCE
+
+START RESOURCE    EggClock_reg.rss
+TARGETPATH        \private\10003a3f\apps
+END //RESOURCE
+
+START BITMAP  EggClock_numbers_icons.mbm
+TARGETPATH     \resource\apps
+HEADER
+SOURCEPATH  ..\gfx
+SOURCE      C12  0.bmp
+SOURCE      C12  1.bmp
+SOURCE      C12  2.bmp
+SOURCE      C12  3.bmp
+SOURCE      C12  4.bmp
+SOURCE      C12  5.bmp
+SOURCE      C12  6.bmp
+SOURCE      C12  7.bmp
+SOURCE      C12  8.bmp
+SOURCE      C12  9.bmp
+SOURCE      C12  colon.bmp
+SOURCE      C12  volume.bmp
+SOURCE        1  volume_mask.bmp
+SOURCE      C12  volume_mute.bmp
+SOURCE        1  volume_mute_mask.bmp
+SOURCE      C12  volume_0.bmp
+SOURCE      C12  volume_1.bmp
+SOURCE      C12  volume_2.bmp
+SOURCE      C12  volume_3.bmp
+SOURCE      C12  volume_4.bmp
+END // BITMAP
+
+USERINCLUDE     ..\inc
+SYSTEMINCLUDE   \epoc32\include
+SYSTEMINCLUDE   \epoc32\include\mmf
+SYSTEMINCLUDE   \epoc32\include\mmf\plugin
+
+LIBRARY        euser.lib apparc.lib cone.lib
+LIBRARY        eikcore.lib avkon.lib
+LIBRARY        eikcoctl.lib bafl.lib efsrv.lib 
+LIBRARY        estlib.lib egul.lib aknicon.lib fbscli.lib
+LIBRARY        mediaclientaudio.lib DrmAudioPlayUtility.lib 
+LIBRARY        PlatformEnv.lib CommonDialogs.lib aknskins.lib MGFetch.lib
+
+
+LANG 01 02 05
+
+VENDORID        0
+CAPABILITY      ReadUserData WriteUserData LocalServices UserEnvironment
+// End of File
+

@@ -1,0 +1,153 @@
+/*
+============================================================================
+ Name        : EggClock.rss
+ Author      : Michele Berionne
+ Version     :
+ Copyright   : 
+ Description : Application resource file
+============================================================================
+*/
+
+//  RESOURCE IDENTIFIER
+NAME HEWB    // 4 letter ID
+
+
+//  INCLUDES
+#include <eikon.rh>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include <appinfo.rh>
+#include "EggClock.hrh"
+#include "EggClock.loc"
+#include "EggClock.rls"
+
+//  RESOURCE DEFINITIONS
+
+RESOURCE RSS_SIGNATURE
+{
+}
+
+// Default Document Name
+RESOURCE TBUF r_default_document_name
+{
+  buf="HEWB";
+}
+
+// Define default menu and CBA key.
+RESOURCE EIK_APP_INFO
+{
+  menubar = r_eggclock_menubar;
+  cba = R_AVKON_SOFTKEYS_OPTIONS_EXIT;
+}
+
+
+// Localizable application information
+RESOURCE LOCALISABLE_APP_INFO r_eggclock_localisable_app_info
+{
+  short_caption = qtn_hewb_short_caption_string;
+  caption_and_icon =
+  CAPTION_AND_ICON_INFO
+  {
+    caption = qtn_hewb_caption_string;
+    number_of_icons = 1;
+    icon_file = "\\resource\\apps\\EggClock_aif.mif";
+  };
+}
+
+RESOURCE MENU_BAR r_eggclock_menubar
+{
+  titles =
+  {
+    MENU_TITLE { menu_pane = r_eggclock_menu; }
+  };
+}
+
+RESOURCE MENU_PANE r_eggclock_menu
+{
+  items =
+  {
+    MENU_ITEM
+    {
+      command = EEggClockCmdStart;
+      txt = T_START;
+    },
+    MENU_ITEM
+    {
+      command = EEggClockCmdStop;
+      txt = T_STOP;
+    },
+    MENU_ITEM
+    {
+      command = EEggClockCmdReset;
+      txt = T_RESET;
+    },
+    MENU_ITEM
+    {
+      command = EEggClockCmdDuration;
+      txt = T_DURATION;
+    },
+    MENU_ITEM
+    {
+      command = EEggClockCmdNotificationScheme;
+      cascade = r_eggclock_notification_menu;
+      txt = T_NOTIFICATION_SCHEME;
+    },
+    MENU_ITEM
+    {
+      command = EEggClockCmdAbout;
+      txt = T_ABOUT;
+    },
+    MENU_ITEM
+    {
+      command = EAknSoftkeyExit;
+      txt = qtn_hewb_exit;
+    }
+  };
+}
+
+RESOURCE MENU_PANE r_eggclock_notification_menu
+{
+  items =
+  {
+    MENU_ITEM { command = EEggClockCmdNotificationSchemeSilent; txt = T_NOTIFICATION_SCHEME_SILENT; },
+    MENU_ITEM { command = EEggClockCmdNotificationSchemeSelect; txt = T_NOTIFICATION_SCHEME_SELECT; }
+  };
+}
+
+RESOURCE DIALOG r_eggclock_duration_query_dialog
+{
+  flags = EGeneralQueryFlags;
+  buttons = R_AVKON_SOFTKEYS_OK_CANCEL;
+  items =
+  {
+    DLG_LINE
+    {
+      type = EAknCtQuery;
+      id = EGeneralQuery;
+      control = AVKON_DATA_QUERY
+      {
+        layout = EDurationLayout;
+        label = T_DURATION;
+        control = DURATION_EDITOR
+        {
+          minDuration = DURATION
+          {
+          };
+          maxDuration = DURATION
+          {
+            seconds = 5999;
+          };
+          flags = 0;
+        };
+      };
+    }
+  };
+}
+
+
+// Resources for messages.
+RESOURCE TBUF r_string_title                 { buf = T_TITLE; }
+RESOURCE TBUF r_string_version               { buf = T_VERSION; }
+RESOURCE TBUF r_string_overtime              { buf = T_OVERTIME; }
+RESOURCE TBUF r_string_select_notification   { buf = T_SELECT_NOTIFICATION; }
+RESOURCE TBUF r_string_audio_error           { buf = T_AUDIO_ERROR; }

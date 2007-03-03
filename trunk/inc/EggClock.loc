@@ -1,0 +1,88 @@
+/*
+============================================================================
+ Name        : EggClock.loc
+ Author      : Michele Berionne
+ Version     :
+ Copyright   : 
+ Description : Localized strings
+============================================================================
+*/
+
+// The Text in source files is encoded in UTF-8
+CHARACTER_SET UTF8
+
+
+// Localisation
+
+// English
+#ifdef LANGUAGE_01
+#define ELanguage                        ELangEnglish
+// Captions and title
+#define qtn_app_caption_string           "EggClock" 
+#define qtn_app_short_caption_string     "EggClock"
+#define T_TITLE                          "EggClock"
+// menu strings
+#define T_START                          "Start"
+#define T_STOP                           "Stop"
+#define T_RESET                          "Reset"
+#define T_DURATION                       "Duration"
+#define T_NOTIFICATION_SCHEME            "Notification scheme"
+#define T_NOTIFICATION_SCHEME_SILENT     "Silent"
+#define T_NOTIFICATION_SCHEME_SELECT     "Select"
+#define T_ABOUT                          "About"
+// other strings
+#define T_VERSION                        "EggClock v1.1"
+#define T_OVERTIME                       "Overtime:"
+#define T_SELECT_NOTIFICATION            "Select notification"
+#define T_AUDIO_ERROR                    "Error reading the audio file. No notification will be played"
+#endif
+
+
+// French
+#ifdef LANGUAGE_02
+#define ELanguage                        ELangFrench
+// Captions and title
+#define qtn_app_caption_string           "EggClock" 
+#define qtn_app_short_caption_string     "EggClock"
+#define T_TITLE                          "EggClock"
+// menu strings
+#define T_START                          "Start"
+#define T_STOP                           "Stop"
+#define T_RESET                          "Reset"
+#define T_DURATION                       "Duration"
+#define T_NOTIFICATION_SCHEME            "Notification scheme"
+#define T_NOTIFICATION_SCHEME_SILENT     "Silent"
+#define T_NOTIFICATION_SCHEME_SELECT     "Select"
+#define T_ABOUT                          "About"
+// other strings
+#define T_VERSION                        "EggClock v1.1"
+#define T_OVERTIME                       "Overtime:"
+#define T_SELECT_NOTIFICATION            "Select notification"
+#define T_AUDIO_ERROR                    "Error reading the audio file. No notification will be played"
+#endif
+
+
+// Italian
+#ifdef LANGUAGE_05
+#define ELanguage                        ELangItalian
+// Captions and title
+#define qtn_app_caption_string           "EggClock" 
+#define qtn_app_short_caption_string     "EggClock"
+#define T_TITLE                          "EggClock"
+// menu strings
+#define T_START                          "Inizio"
+#define T_STOP                           "Fine"
+#define T_RESET                          "Reset"
+#define T_DURATION                       "Durata"
+#define T_NOTIFICATION_SCHEME            "Notifica"
+#define T_NOTIFICATION_SCHEME_SILENT     "Silenzioso"
+#define T_NOTIFICATION_SCHEME_SELECT     "Scegli"
+#define T_ABOUT                          "Informazioni"
+// other strings
+#define T_VERSION                        "EggClock v1.1"
+#define T_OVERTIME                       "Extra time:"
+#define T_SELECT_NOTIFICATION            "Scegli notifica"
+#define T_AUDIO_ERROR                    "Errore in lettura del file audio"
+#endif
+
+

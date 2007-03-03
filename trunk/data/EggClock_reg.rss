@@ -1,0 +1,24 @@
+/*
+============================================================================
+ Name        : EggClock_reg.rss
+ Author      : Michele Berionne
+ Version     :
+ Copyright   : 
+ Description : Application registration resource file
+============================================================================
+*/
+
+#include <appinfo.rh>
+#include <EggClock.rsg>
+
+UID2 KUidAppRegistrationResourceFile
+UID3 0xA00026FC
+
+RESOURCE APP_REGISTRATION_INFO
+{
+  app_file="EggClock";
+  localisable_resource_file = "\\resource\\apps\\EggClock";
+  localisable_resource_id = R_EGGCLOCK_LOCALISABLE_APP_INFO;
+  embeddability=KAppNotEmbeddable;
+  newfile=KAppDoesNotSupportNewFile;
+}
