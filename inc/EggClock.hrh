@@ -1,0 +1,27 @@
+/*
+============================================================================
+ Name        : EggClock.hrh
+ Author      : Michele Berionne
+ Version     :
+ Copyright   : 
+ Description : Enumerations used in the application UI
+============================================================================
+*/
+
+#ifndef __EGGCLOCK_HRH__
+#define __EGGCLOCK_HRH__
+
+// EggClock enumerate command codes
+enum TEggClockIds
+{
+  EEggClockCmdStart = 1, // start value must not be 0
+  EEggClockCmdStop,
+  EEggClockCmdDuration,
+  EEggClockCmdReset,
+  EEggClockCmdNotificationScheme,
+  EEggClockCmdNotificationSchemeSilent,
+  EEggClockCmdNotificationSchemeSelect,
+  EEggClockCmdAbout
+};
+
+#endif // __EGGCLOCK_HRH__
