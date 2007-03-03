@@ -1,0 +1,8 @@
+#summary EggClock software.
+
+= Introduction =
+
+Countdown program for Symbian S60 3rd edition devices.
+
+= Details =
+
