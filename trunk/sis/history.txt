@@ -1,5 +1,10 @@
 History of EggTimer
 
+Version 1.2 (05/03/2007)
+--------------------------
+[improv] Red key sends the application to background instead of closing it.
+[improv] Application goes to foreground when it starts playing the notification.
+
 Version 1.1 (03/03/2007)
 --------------------------
 [fix]    Added mask image for volume indicator, to avoid wrong display on dark

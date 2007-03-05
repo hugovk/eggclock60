@@ -3,8 +3,8 @@
 ;Languages - English, French and Italian
 &EN,FR,IT
 
-;Standard SIS file header (name, UID, version 1.1.0)
-#{"EggClock","EggClock","EggClock"},(0xA00026FC),1,1,0
+;Standard SIS file header (name, UID, version 1.2.0)
+#{"EggClock","EggClock","EggClock"},(0xA00026FC),1,2,0
 
 ;Localised Vendor name
 %{"Wipo","Wipo","Wipo"}

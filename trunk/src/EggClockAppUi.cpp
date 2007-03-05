@@ -183,10 +183,34 @@ TKeyResponse CEggClockAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCo
         }
       }
       return EKeyWasConsumed;
+    // Red key to background if running
+    case EKeyNo:
+      if (m_pAppContainer)
+      {
+        if (m_pAppContainer->IsRunning())
+        {
+          CEikonEnv::Static()->RootWin().SetOrdinalPosition(-1);
+        }
+      }
+      return EKeyWasConsumed;    
     default:
       break;
   }
   return EKeyWasNotConsumed;
+}
+
+void CEggClockAppUi::HandleWsEventL(const TWsEvent& aEvent, CCoeControl* aDestination)
+{
+  switch (aEvent.Type())
+  { 
+    case KAknUidValueEndKeyCloseEvent:
+      // Nothing to do
+      break;
+    default:
+      // other events to be handled by CAknAppUi::HandleWsEventL
+      CAknAppUi::HandleWsEventL(aEvent, aDestination);
+      break;
+  }
 }
 
 void CEggClockAppUi::HandleStatusPaneSizeChange()
