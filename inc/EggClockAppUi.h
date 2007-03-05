@@ -26,6 +26,7 @@ class CEggClockAppUi : public CAknAppUi
 
   private:  // Functions from base classes
     void HandleCommandL( TInt aCommand );
+    void HandleWsEventL(const TWsEvent& aEvent, CCoeControl* aDestination);
     TKeyResponse HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode aType);
     void HandleStatusPaneSizeChange();
     void DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane);
