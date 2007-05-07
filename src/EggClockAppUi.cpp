@@ -126,6 +126,77 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
 */
       break;
     }
+    case EEggClockCmdNotificationRepeat:
+    {
+      TInt iIndex = 0;
+      CAknListQueryDialog* dlg = new (ELeave) CAknListQueryDialog(&iIndex);
+      dlg->PrepareLC(R_EGGCLOCK_REPETITION_QUERY);
+
+      TInt iSelected = 0;
+      TInt iMinutes = m_pAppContainer->GetRepeatMinutes();
+      TBuf<4> iMinutesDes;
+      if (iMinutes >= INFINITE_MINUTES)
+      {
+        iSelected = 0;
+        iMinutesDes.Num(5);
+      }
+      else if (iMinutes == 0)
+      {
+        iSelected = 1;
+        iMinutesDes.Num(5);
+      }
+      else
+      {
+        iSelected = 2;
+        iMinutesDes.Num(iMinutes);
+      }
+      
+      CDesCArray* pItemList = new (ELeave) CDesCArrayFlat(4);
+      CleanupStack::PushL(pItemList);
+      HBufC* pStringOnce = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_ONCE);
+      HBufC* pStringLoop = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_LOOP);
+      HBufC* pStringEveryX = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_EVERY_X);
+      pStringEveryX->Des().Replace(pStringEveryX->Find(_L("XXXX")), 4, iMinutesDes);
+      pItemList->AppendL(*pStringOnce);
+      pItemList->AppendL(*pStringLoop);
+      pItemList->AppendL(*pStringEveryX);
+      CleanupStack::PopAndDestroy();  // pStringEveryX
+      CleanupStack::PopAndDestroy();  // pStringLoop
+      CleanupStack::PopAndDestroy();  // pStringOnce
+      CleanupStack::Pop();            // pItemList
+      
+      dlg->SetItemTextArray(pItemList);
+      dlg->SetOwnershipType(ELbmOwnsItemArray);
+      dlg->ListBox()->SetCurrentItemIndex(iSelected);
+
+      if (dlg->RunLD())
+      {
+        if (iIndex == 0)  // Once
+        {
+          TRAPD(r, m_pAppContainer->SetRepeatMinutesL(INFINITE_MINUTES); );
+        }
+        else if (iIndex == 1)  // Loop
+        {
+          TRAPD(r, m_pAppContainer->SetRepeatMinutesL(0); );
+        }
+        else if (iIndex == 2)  // Every X minutes
+        {
+          TInt iNewMinutes = iMinutes;
+          if (iMinutes == 0 || iMinutes >= INFINITE_MINUTES)
+          {
+            iNewMinutes = 5;
+          }
+          CAknNumberQueryDialog* dlg2 = new (ELeave) CAknNumberQueryDialog(iNewMinutes);
+          dlg2->PrepareLC(R_EGGCLOCK_REPETITION_MINUTES_QUERY);
+          dlg2->SetMinimumAndMaximum(1, 60);
+          if (dlg2->RunLD())
+          {
+            TRAPD(r, m_pAppContainer->SetRepeatMinutesL(iNewMinutes); );
+          }
+        }
+      }
+      break;
+    }
     case EEggClockCmdAbout:
     {
       HBufC* pVersioString = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_VERSION);

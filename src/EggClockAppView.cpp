@@ -34,8 +34,9 @@ struct stSettings
   TFileName iNotificationFile;
   TInt      iTotalTime;
   TInt      iVolume;
+  TInt      iRepeatMinutes;
 };
-typedef TPckgBuf<stSettings>  SETTINGS_BUF;
+typedef TPckgBuf<stSettings> SETTINGS_BUF;
 
 
 // ============================ MEMBER FUNCTIONS ===============================
@@ -101,6 +102,20 @@ void CEggClockAppView::ConstructL( const TRect& aRect )
     m_pVolumeValueIcons->AppendL(CGulIcon::NewL(pBitmap, pBitmap));
     CleanupStack::Pop(); // pBitmap
   }
+  
+  // Load icons for repeat
+  CFbsBitmap* pRepeatOnceBitmap = iEikonEnv->CreateBitmapL(KEggClockIconsFilename, EMbmEggclock_numbers_iconsRepeat_once);
+  CleanupStack::PushL(pRepeatOnceBitmap);
+  m_pRepeatOnceIcon = CGulIcon::NewL(pRepeatOnceBitmap, pRepeatOnceBitmap);
+  CleanupStack::Pop(); // pRepeatOnceBitmap
+  CFbsBitmap* pRepeatLoopBitmap = iEikonEnv->CreateBitmapL(KEggClockIconsFilename, EMbmEggclock_numbers_iconsRepeat_loop);
+  CleanupStack::PushL(pRepeatLoopBitmap);
+  m_pRepeatLoopIcon = CGulIcon::NewL(pRepeatLoopBitmap, pRepeatLoopBitmap);
+  CleanupStack::Pop(); // pRepeatLoopBitmap
+  CFbsBitmap* pRepeatEveryXBitmap = iEikonEnv->CreateBitmapL(KEggClockIconsFilename, EMbmEggclock_numbers_iconsRepeat_every_x);
+  CleanupStack::PushL(pRepeatEveryXBitmap);
+  m_pRepeatEveryXIcon = CGulIcon::NewL(pRepeatEveryXBitmap, pRepeatEveryXBitmap);
+  CleanupStack::Pop(); // pRepeatEveryXBitmap
   
   // Load settings
   LoadSettingsL();
@@ -185,6 +200,21 @@ CEggClockAppView::~CEggClockAppView()
     m_pVolumeValueIcons->ResetAndDestroy();
     delete m_pVolumeValueIcons;
     m_pVolumeValueIcons = NULL;
+  }
+  if (m_pRepeatOnceIcon)
+  {
+    delete m_pRepeatOnceIcon;
+    m_pRepeatOnceIcon = NULL;
+  }
+  if (m_pRepeatLoopIcon)
+  {
+    delete m_pRepeatLoopIcon;
+    m_pRepeatLoopIcon = NULL;
+  }
+  if (m_pRepeatEveryXIcon)
+  {
+    delete m_pRepeatEveryXIcon;
+    m_pRepeatEveryXIcon = NULL;
   }
   if (m_pFilePlayer)
   {
@@ -316,18 +346,34 @@ void CEggClockAppView::DrawVolumeL(const TRect& /*aRect*/) const
   {
     CWindowGc& gc = SystemGc();
   
+    CFbsBitmap* pRepeat = m_iRepeatMinutes == 0 ? m_pRepeatLoopIcon->Bitmap() :
+                          (m_iRepeatMinutes >= INFINITE_MINUTES ? m_pRepeatOnceIcon->Bitmap() : m_pRepeatEveryXIcon->Bitmap());
     CFbsBitmap* pVolume = (m_iNotificationFile.Length() > 0 && m_iAudioState != eAudioIdle) ? m_pVolumeIcon->Bitmap() : m_pVolumeMuteIcon->Bitmap();
     CFbsBitmap* pVolumeValue = m_pVolumeValueIcons->At(m_iVolume)->Bitmap();
     
-    if (pVolume && pVolumeValue)
+    if (pRepeat && pVolume && pVolumeValue)
     {
-      TInt iTotalWidth = pVolume->SizeInPixels().iWidth + DIGIT_PADDING +
-                         pVolumeValue->SizeInPixels().iWidth + CLOCK_SIDE_PADDING;
-      TPoint iPoint(Size().iWidth - iTotalWidth, CLOCK_SIDE_PADDING);
-  
-      gc.DrawBitmapMasked(TRect(iPoint, pVolume->SizeInPixels()), pVolume, TRect(pVolume->SizeInPixels()), pVolume, ETrue);
-      gc.DrawBitmapMasked(TRect(iPoint + TPoint(pVolume->SizeInPixels().iWidth + DIGIT_PADDING, 0),
-                          pVolumeValue->SizeInPixels()), pVolumeValue, TRect(pVolumeValue->SizeInPixels()), pVolumeValue, ETrue);
+      if (m_iNotificationFile.Length() > 0)
+      {
+        TInt iTotalWidth = pRepeat->SizeInPixels().iWidth + DIGIT_PADDING +
+                           pVolume->SizeInPixels().iWidth + DIGIT_PADDING +
+                           pVolumeValue->SizeInPixels().iWidth + CLOCK_SIDE_PADDING;
+
+        TPoint iPoint(Size().iWidth - iTotalWidth, CLOCK_SIDE_PADDING);
+        gc.DrawBitmapMasked(TRect(iPoint, pRepeat->SizeInPixels()), pRepeat, TRect(pRepeat->SizeInPixels()), pRepeat, ETrue);
+
+        iPoint = iPoint + TPoint(pRepeat->SizeInPixels().iWidth + DIGIT_PADDING, 0);
+        gc.DrawBitmapMasked(TRect(iPoint, pVolume->SizeInPixels()), pVolume, TRect(pVolume->SizeInPixels()), pVolume, ETrue);
+      
+        iPoint = iPoint + TPoint(pVolume->SizeInPixels().iWidth + DIGIT_PADDING, 0);
+        gc.DrawBitmapMasked(TRect(iPoint, pVolumeValue->SizeInPixels()), pVolumeValue, TRect(pVolumeValue->SizeInPixels()), pVolumeValue, ETrue);
+      }
+      else
+      {
+        TInt iTotalWidth = pVolume->SizeInPixels().iWidth + CLOCK_SIDE_PADDING;
+        TPoint iPoint(Size().iWidth - iTotalWidth, CLOCK_SIDE_PADDING);
+        gc.DrawBitmapMasked(TRect(iPoint, pVolume->SizeInPixels()), pVolume, TRect(pVolume->SizeInPixels()), pVolume, ETrue);
+      }
     }
   }
 }
@@ -367,6 +413,7 @@ TBool CEggClockAppView::StopTimer()
     m_pFilePlayer->Stop();
     m_iAudioState = eAudioReady;
   }
+  DrawNow();
   return ETrue;
 }
 
@@ -445,6 +492,15 @@ void CEggClockAppView::DoTimerFired()
   {
     PlayNotificationL();
   }
+  if (m_iRemainingDuration < 0 && m_iRepeatMinutes > 0 && m_iRepeatMinutes < INFINITE_MINUTES &&
+      ((-m_iRemainingDuration) % (60 * m_iRepeatMinutes)) == 0)
+  {
+    if (m_iAudioState == eAudioReady)
+    {
+      m_pFilePlayer->Play();
+      m_iAudioState = eAudioPlaying;
+    }
+  }
   
   DrawNow();
 }
@@ -520,6 +576,21 @@ void CEggClockAppView::SetNotificationL(const TDesC& aFileName)
   SaveSettingsL();
 }
 
+void CEggClockAppView::SetRepeatMinutesL(const TInt iMinutes)
+{
+  m_iRepeatMinutes = iMinutes;
+  
+  DrawNow();
+  
+  // Save settings for future
+  SaveSettingsL();
+}
+
+TInt CEggClockAppView::GetRepeatMinutes()
+{
+  return m_iRepeatMinutes;
+}
+
 void CEggClockAppView::ChangeVolume(TInt iStep)
 {
   if (iStep > 0 && m_iVolume < MAX_VOLUME)
@@ -565,9 +636,16 @@ void CEggClockAppView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSec
   }
 }
 
-void CEggClockAppView::MapcPlayComplete(TInt /*aError*/)
+void CEggClockAppView::MapcPlayComplete(TInt aError)
 {
-  m_iAudioState = eAudioReady;
+  if (m_iRepeatMinutes == 0 && m_iAudioState == eAudioPlaying && aError == KErrNone)
+  {
+    m_pFilePlayer->Play();
+  }
+  else
+  {
+    m_iAudioState = eAudioReady;
+  }
 }
 
 void CEggClockAppView::MdapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds& aDuration)
@@ -602,6 +680,7 @@ void CEggClockAppView::SaveSettingsL()
             (*pSettingsBuf)().iNotificationFile.Copy(m_iNotificationFile);
             (*pSettingsBuf)().iTotalTime = m_iTotalDuration;
             (*pSettingsBuf)().iVolume = m_iVolume;
+            (*pSettingsBuf)().iRepeatMinutes = m_iRepeatMinutes;
           
             iFile.Write((*pSettingsBuf));
             iFile.Flush();
@@ -639,12 +718,14 @@ void CEggClockAppView::LoadSettingsL()
           if ((*pSettingsBuf)().iTotalTime > 5999) (*pSettingsBuf)().iTotalTime = 5999;
           if ((*pSettingsBuf)().iVolume < 0) (*pSettingsBuf)().iVolume = 0;
           if ((*pSettingsBuf)().iVolume > MAX_VOLUME) (*pSettingsBuf)().iVolume = MAX_VOLUME;
+          if ((*pSettingsBuf)().iRepeatMinutes < 0) (*pSettingsBuf)().iRepeatMinutes = 0;
 
           m_iTotalDuration = (*pSettingsBuf)().iTotalTime;
           m_iRemainingDuration = (*pSettingsBuf)().iTotalTime;
           m_iNotificationFile.Copy((*pSettingsBuf)().iNotificationFile);
           m_iVolume = (*pSettingsBuf)().iVolume;
-                    
+          m_iRepeatMinutes = (*pSettingsBuf)().iRepeatMinutes;
+          
           delete pSettingsBuf;
 
           //iEikonEnv->InfoMsg(m_iNotificationFile);
