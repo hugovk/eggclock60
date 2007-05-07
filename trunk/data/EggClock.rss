@@ -110,7 +110,8 @@ RESOURCE MENU_PANE r_eggclock_notification_menu
   items =
   {
     MENU_ITEM { command = EEggClockCmdNotificationSchemeSilent; txt = T_NOTIFICATION_SCHEME_SILENT; },
-    MENU_ITEM { command = EEggClockCmdNotificationSchemeSelect; txt = T_NOTIFICATION_SCHEME_SELECT; }
+    MENU_ITEM { command = EEggClockCmdNotificationSchemeSelect; txt = T_NOTIFICATION_SCHEME_SELECT; },
+    MENU_ITEM { command = EEggClockCmdNotificationRepeat; txt = T_NOTIFICATION_REPEAT; }
   };
 }
 
@@ -144,6 +145,61 @@ RESOURCE DIALOG r_eggclock_duration_query_dialog
   };
 }
 
+RESOURCE AVKON_LIST_QUERY r_eggclock_repetition_query
+{
+  flags = EGeneralQueryFlags;
+  softkeys = R_AVKON_SOFTKEYS_OK_CANCEL;
+  items =
+  {
+    AVKON_LIST_QUERY_DLG_LINE
+    {
+      control = AVKON_LIST_QUERY_CONTROL
+      {
+        listtype = EAknCtSinglePopupMenuListBox;
+        listbox = AVKON_LIST_QUERY_LIST
+        {
+          array_id = r_eggclock_repetition_query_items;
+        };
+        heading = T_NOTIFICATION_REPEAT;
+      };
+    }
+  };
+}
+
+RESOURCE ARRAY r_eggclock_repetition_query_items
+{
+  items =
+  {
+    LBUF {txt = T_NOTIFICATION_REPEAT_ONCE; },
+    LBUF {txt = T_NOTIFICATION_REPEAT_LOOP; },
+    LBUF {txt = T_NOTIFICATION_REPEAT_EVERY_X; }
+  };
+}
+
+RESOURCE DIALOG r_eggclock_repetition_minutes_query
+{
+  flags = EGeneralQueryFlags;
+  buttons = R_AVKON_SOFTKEYS_OK_EMPTY;
+  items =
+  {
+    DLG_LINE
+    {
+      type = EAknCtQuery;
+      id = EGeneralQuery;
+      control= AVKON_DATA_QUERY
+      {
+        layout = ENumberLayout;
+        label = T_REPETITION_MINUTES;
+        control = AVKON_INTEGER_EDWIN
+        {
+          min = 1;
+          max = 60;
+        };
+      };
+    }
+  };
+}
+
 
 // Resources for messages.
 RESOURCE TBUF r_string_title                 { buf = T_TITLE; }
@@ -151,3 +207,6 @@ RESOURCE TBUF r_string_version               { buf = T_VERSION; }
 RESOURCE TBUF r_string_overtime              { buf = T_OVERTIME; }
 RESOURCE TBUF r_string_select_notification   { buf = T_SELECT_NOTIFICATION; }
 RESOURCE TBUF r_string_audio_error           { buf = T_AUDIO_ERROR; }
+RESOURCE TBUF r_string_repeat_once           { buf = T_NOTIFICATION_REPEAT_ONCE; }
+RESOURCE TBUF r_string_repeat_loop           { buf = T_NOTIFICATION_REPEAT_LOOP; }
+RESOURCE TBUF r_string_repeat_every_x        { buf = T_NOTIFICATION_REPEAT_EVERY_X; }

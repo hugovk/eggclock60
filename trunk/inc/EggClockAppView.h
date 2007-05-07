@@ -27,6 +27,8 @@ enum eAudioState
   eAudioPlaying
 };
 
+const TInt INFINITE_MINUTES = 0xFF;
+
 // Forward declaration
 class MAknsControlContext;
 
@@ -57,6 +59,8 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
     TBool IsRunning();
     TBool IsReset();
     void  SetNotificationL(const TDesC& aFileName);
+    void  SetRepeatMinutesL(const TInt iMinutes);
+    TInt  GetRepeatMinutes();
     void  ChangeVolume(TInt iStep);
     TBool StartTimer();
     TBool StopTimer();
@@ -82,7 +86,7 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
 
   private:  // Data
     CPeriodic*                  m_pTimer;                   // Main timer
-    TInt                        m_iTotalDuration;           // Total duration of timer
+    TInt                        m_iTotalDuration;           // Total duration of timer in seconds
     TInt                        m_iRemainingDuration;       // Seconds remaining to 0
 
     CPeriodic*                  m_pFlashTimer;              // Timer to flash screen after notification
@@ -93,6 +97,9 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
     CGulIcon*                   m_pVolumeIcon;              // Icon for volume
     CGulIcon*                   m_pVolumeMuteIcon;          // Icon for volume muted
     CArrayPtr<CGulIcon>*        m_pVolumeValueIcons;        // Array of icons with volume
+    CGulIcon*                   m_pRepeatOnceIcon;          // Icon for repeat once
+    CGulIcon*                   m_pRepeatLoopIcon;          // Icon for repeat loop
+    CGulIcon*                   m_pRepeatEveryXIcon;        // Icon for repeat every X minutes
     
     TFileName                   m_iNotificationFile;        // Name of notification file
 #ifndef DRM_PLAYER
@@ -102,6 +109,7 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
 #endif
     eAudioState                 m_iAudioState;              // Audio state
     TInt                        m_iVolume;                  // Audio volume
+    TInt                        m_iRepeatMinutes;
     
     MAknsControlContext*        m_pSkinBackground;
 };

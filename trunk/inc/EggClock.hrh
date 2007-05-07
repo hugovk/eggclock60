@@ -21,6 +21,7 @@ enum TEggClockIds
   EEggClockCmdNotificationScheme,
   EEggClockCmdNotificationSchemeSilent,
   EEggClockCmdNotificationSchemeSelect,
+  EEggClockCmdNotificationRepeat,
   EEggClockCmdAbout
 };
 

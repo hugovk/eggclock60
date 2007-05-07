@@ -55,6 +55,9 @@ SOURCE      C12  volume_1.bmp
 SOURCE      C12  volume_2.bmp
 SOURCE      C12  volume_3.bmp
 SOURCE      C12  volume_4.bmp
+SOURCE      C12  repeat_once.bmp
+SOURCE      C12  repeat_loop.bmp
+SOURCE      C12  repeat_every_x.bmp
 END // BITMAP
 
 USERINCLUDE     ..\inc
