@@ -1,28 +1,28 @@
 ; EggClock.pkg
 ;
 ;Languages - English, French and Italian
-&EN,FR,IT
+&EN, FR, IT
 
-;Standard SIS file header (name, UID, version 1.3.0)
-#{"EggClock","EggClock","EggClock"},(0xA00026FC),1,3,0
+;Standard SIS file header (name, UID, version)
+#{"EggClock", "EggClock", "EggClock"}, (0xA00026FC), 1, 4, 0
 
 ;Localised Vendor name
-%{"Wipo","Wipo","Wipo"}
+%{"Wipo", "Wipo", "Wipo"}
 
 ;Unique Vendor name
 :"Wipo"
 
 ;Supports Series 60 v 3.0
-[0x101F7961], 0, 0, 0, {"Series60ProductID","Series60ProductID","Series60ProductID"}
+[0x101F7961], 0, 0, 0, {"Series60ProductID", "Series60ProductID", "Series60ProductID"}
 
 ;Files to install
-"\Symbian\9.1\S60_3rd_MR\epoc32\release\gcce\urel\EggClock.exe"                  -"!:\sys\bin\EggClock.exe"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\resource\apps\EggClock.r01"               -"!:\resource\apps\EggClock.r01"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\resource\apps\EggClock.r02"               -"!:\resource\apps\EggClock.r02"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\resource\apps\EggClock.r05"               -"!:\resource\apps\EggClock.r05"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\private\10003a3f\apps\EggClock_reg.r01"   -"!:\private\10003a3f\import\apps\EggClock_reg.r01"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\private\10003a3f\apps\EggClock_reg.r02"   -"!:\private\10003a3f\import\apps\EggClock_reg.r02"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\private\10003a3f\apps\EggClock_reg.r05"   -"!:\private\10003a3f\import\apps\EggClock_reg.r05"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\resource\apps\EggClock_AIF.mif"	         -"!:\resource\apps\EggClock_AIF.mif"
-"\Symbian\9.1\S60_3rd_MR\epoc32\data\z\resource\apps\EggClock_numbers_icons.mbm" -"!:\resource\apps\EggClock_numbers_icons.mbm"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\release\gcce\urel\EggClock.exe"                  -"!:\sys\bin\EggClock.exe"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\resource\apps\EggClock.r01"               -"!:\resource\apps\EggClock.r01"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\resource\apps\EggClock.r02"               -"!:\resource\apps\EggClock.r02"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\resource\apps\EggClock.r05"               -"!:\resource\apps\EggClock.r05"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\private\10003a3f\apps\EggClock_reg.r01"   -"!:\private\10003a3f\import\apps\EggClock_reg.r01"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\private\10003a3f\apps\EggClock_reg.r02"   -"!:\private\10003a3f\import\apps\EggClock_reg.r02"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\private\10003a3f\apps\EggClock_reg.r05"   -"!:\private\10003a3f\import\apps\EggClock_reg.r05"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\resource\apps\EggClock_AIF.mif"	         -"!:\resource\apps\EggClock_AIF.mif"
+"\S60\devices\S60_3rd_FP2_SDK_v1.1\epoc32\data\z\resource\apps\EggClock_numbers_icons.mbm" -"!:\resource\apps\EggClock_numbers_icons.mbm"
 

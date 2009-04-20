@@ -1,5 +1,9 @@
 History of EggTimer
 
+Version 1.4 (20/04/2009)
+--------------------------
+[fix]    Created a certificate to self-sign the application.
+
 Version 1.3 (08/05/2007)
 --------------------------
 [improv] Added support for repetion of alarm (once, loop and every X minutes)
