@@ -1,5 +1,9 @@
 History of EggTimer
 
+Version 1.5 (22/04/2009)
+--------------------------
+[improv] Added support for white background
+
 Version 1.4 (20/04/2009)
 --------------------------
 [fix]    Created a certificate to self-sign the application.

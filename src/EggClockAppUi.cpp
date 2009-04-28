@@ -9,11 +9,11 @@
 */
 
 // INCLUDE FILES
-#include <avkon.hrh>
 #include <aknnotewrappers.h>
-#include <pathinfo.h>
+#include <avkon.hrh>
 #include <caknfileselectiondialog.h>
 #include <mgfetch.h>
+#include <pathinfo.h>
 
 #include <EggClock.rsg>
 #include "EggClock.pan"
@@ -70,7 +70,7 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
       if (m_pAppContainer)
       {
         TTimeIntervalSeconds iDuration(m_pAppContainer->GetDuration());
-        CAknDurationQueryDialog* dlg = CAknDurationQueryDialog::NewL(iDuration, CAknQueryDialog::ENoTone);
+        CAknDurationQueryDialog* dlg(CAknDurationQueryDialog::NewL(iDuration, CAknQueryDialog::ENoTone));
         if (dlg->ExecuteLD(R_EGGCLOCK_DURATION_QUERY_DIALOG))
         {
           m_pAppContainer->SetDuration(iDuration.Int()); 
@@ -93,13 +93,13 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
     case EEggClockCmdNotificationSchemeSelect:
     {
       TFileName iFilename;
-      CDesCArray* pSelectedFiles = new (ELeave)CDesCArrayFlat(2);
+      CDesCArray* pSelectedFiles(new (ELeave)CDesCArrayFlat(2));
       CleanupStack::PushL(pSelectedFiles);
       if (MGFetch::RunL(*pSelectedFiles, EAudioFile, EFalse, NULL))
       {
         if (m_pAppContainer)
         {
-          TRAPD(r, m_pAppContainer->SetNotificationL((*pSelectedFiles)[0]); );
+          TRAP_IGNORE(m_pAppContainer->SetNotificationL((*pSelectedFiles)[0]));
         }
       }
       CleanupStack::PopAndDestroy(pSelectedFiles);
@@ -116,8 +116,8 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
       }
       iFilename.Append(PathInfo::SoundsPath());
 
-      HBufC* pSelectNotification = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_SELECT_NOTIFICATION);
-      TBool bSelection = CAknFileSelectionDialog::RunDlgLD(iFilename, PathInfo::PhoneMemoryRootPath(), *pSelectNotification, NULL);
+      HBufC* pSelectNotification(CCoeEnv::Static()->AllocReadResourceLC(R_STRING_SELECT_NOTIFICATION));
+      TBool bSelection(CAknFileSelectionDialog::RunDlgLD(iFilename, PathInfo::PhoneMemoryRootPath(), *pSelectNotification, NULL));
       CleanupStack::PopAndDestroy(pSelectNotification);
       if (bSelection && m_pAppContainer)
       {
@@ -128,12 +128,12 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
     }
     case EEggClockCmdNotificationRepeat:
     {
-      TInt iIndex = 0;
-      CAknListQueryDialog* dlg = new (ELeave) CAknListQueryDialog(&iIndex);
+      TInt iIndex(0);
+      CAknListQueryDialog* dlg(new (ELeave) CAknListQueryDialog(&iIndex));
       dlg->PrepareLC(R_EGGCLOCK_REPETITION_QUERY);
 
-      TInt iSelected = 0;
-      TInt iMinutes = m_pAppContainer->GetRepeatMinutes();
+      TInt iSelected(0);
+      TInt iMinutes(m_pAppContainer->GetRepeatMinutes());
       TBuf<4> iMinutesDes;
       if (iMinutes >= INFINITE_MINUTES)
       {
@@ -151,11 +151,11 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
         iMinutesDes.Num(iMinutes);
       }
       
-      CDesCArray* pItemList = new (ELeave) CDesCArrayFlat(4);
+      CDesCArray* pItemList(new (ELeave) CDesCArrayFlat(3));
       CleanupStack::PushL(pItemList);
-      HBufC* pStringOnce = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_ONCE);
-      HBufC* pStringLoop = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_LOOP);
-      HBufC* pStringEveryX = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_EVERY_X);
+      HBufC* pStringOnce(CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_ONCE));
+      HBufC* pStringLoop(CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_LOOP));
+      HBufC* pStringEveryX(CCoeEnv::Static()->AllocReadResourceLC(R_STRING_REPEAT_EVERY_X));
       pStringEveryX->Des().Replace(pStringEveryX->Find(_L("XXXX")), 4, iMinutesDes);
       pItemList->AppendL(*pStringOnce);
       pItemList->AppendL(*pStringLoop);
@@ -173,34 +173,46 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
       {
         if (iIndex == 0)  // Once
         {
-          TRAPD(r, m_pAppContainer->SetRepeatMinutesL(INFINITE_MINUTES); );
+          TRAP_IGNORE(m_pAppContainer->SetRepeatMinutesL(INFINITE_MINUTES));
         }
         else if (iIndex == 1)  // Loop
         {
-          TRAPD(r, m_pAppContainer->SetRepeatMinutesL(0); );
+          TRAP_IGNORE(m_pAppContainer->SetRepeatMinutesL(0));
         }
         else if (iIndex == 2)  // Every X minutes
         {
-          TInt iNewMinutes = iMinutes;
+          TInt iNewMinutes(iMinutes);
           if (iMinutes == 0 || iMinutes >= INFINITE_MINUTES)
           {
             iNewMinutes = 5;
           }
-          CAknNumberQueryDialog* dlg2 = new (ELeave) CAknNumberQueryDialog(iNewMinutes);
+          CAknNumberQueryDialog* dlg2(new (ELeave) CAknNumberQueryDialog(iNewMinutes));
           dlg2->PrepareLC(R_EGGCLOCK_REPETITION_MINUTES_QUERY);
           dlg2->SetMinimumAndMaximum(1, 60);
           if (dlg2->RunLD())
           {
-            TRAPD(r, m_pAppContainer->SetRepeatMinutesL(iNewMinutes); );
+            TRAP_IGNORE(m_pAppContainer->SetRepeatMinutesL(iNewMinutes));
           }
         }
       }
       break;
     }
+    case EEggClockCmdBackgroundSkin:
+      if (m_pAppContainer)
+      {
+        m_pAppContainer->SetSkinBackgroundL(ETrue);
+      }
+      break;
+    case EEggClockCmdBackgroundWhite:
+      if (m_pAppContainer)
+      {
+        m_pAppContainer->SetSkinBackgroundL(EFalse);
+      }
+      break;
     case EEggClockCmdAbout:
     {
-      HBufC* pVersioString = CCoeEnv::Static()->AllocReadResourceLC(R_STRING_VERSION);
-      CAknInformationNote* pAboutNote = new (ELeave) CAknInformationNote;
+      HBufC* pVersioString(CCoeEnv::Static()->AllocReadResourceLC(R_STRING_VERSION));
+      CAknInformationNote* pAboutNote(new (ELeave) CAknInformationNote);
       pAboutNote->SetTimeout(CAknNoteDialog::ENoTimeout);
       pAboutNote->ExecuteLD(*pVersioString);
       CleanupStack::PopAndDestroy(pVersioString);
@@ -317,12 +329,11 @@ void CEggClockAppUi::DynInitMenuPaneL(TInt aResourceId, CEikMenuPane* aMenuPane)
 
 MDesCArray* CEggClockAppUi::CreateNotificationArrayL() const
 {
-  CDesCArrayFlat* pNamesArray = new (ELeave) CDesCArrayFlat(5);
+  CDesCArrayFlat* pNamesArray(new (ELeave) CDesCArrayFlat(5));
   CleanupStack::PushL(pNamesArray);
-  for (TInt i = 0; i < 5; i++) 
+  for (TInt i(0); i < 5; ++i) 
   {
-    TBuf<20> iName;
-    iName.Copy(_L("Schema: "));
+    TBuf<20> iName(_L("Schema: "));
     iName.AppendNum(i);
     pNamesArray->AppendL(iName); 
   }
@@ -330,3 +341,5 @@ MDesCArray* CEggClockAppUi::CreateNotificationArrayL() const
   CleanupStack::Pop(pNamesArray);
   return pNamesArray; 
 }
+
+// End of file

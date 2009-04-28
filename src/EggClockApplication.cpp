@@ -9,8 +9,8 @@
 */
 
 // INCLUDE FILES
-#include "EggClockDocument.h"
 #include "EggClockApplication.h"
+#include "EggClockDocument.h"
 
 // ============================ MEMBER FUNCTIONS ===============================
 
@@ -30,3 +30,4 @@ TUid CEggClockApplication::AppDllUid() const
   return KUidEggClockApp;
 }
 
+// End of file

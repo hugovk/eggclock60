@@ -4,7 +4,7 @@
 &EN, FR, IT
 
 ;Standard SIS file header (name, UID, version)
-#{"EggClock", "EggClock", "EggClock"}, (0xA00026FC), 1, 4, 0
+#{"EggClock", "EggClock", "EggClock"}, (0xA00026FC), 1, 5, 0
 
 ;Localised Vendor name
 %{"Wipo", "Wipo", "Wipo"}
