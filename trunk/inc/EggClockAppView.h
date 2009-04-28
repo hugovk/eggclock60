@@ -13,9 +13,9 @@
 
 // INCLUDES
 #include <coecntrl.h>
+#include <drmaudiosampleplayer.h>  // MDrmAudioPlayerCallback
 #include <gulicon.h>               // Icons
 #include <MdaAudioSamplePlayer.h>  // MMdaAudioPlayerCallback
-#include <drmaudiosampleplayer.h>  // MDrmAudioPlayerCallback
 
 #define DRM_PLAYER
 
@@ -61,6 +61,8 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
     void  SetNotificationL(const TDesC& aFileName);
     void  SetRepeatMinutesL(const TInt iMinutes);
     TInt  GetRepeatMinutes();
+    void  SetSkinBackgroundL(TBool bUseSkin);
+    TBool GetSkinBackground();
     void  ChangeVolume(TInt iStep);
     TBool StartTimer();
     TBool StopTimer();
@@ -110,6 +112,7 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
     eAudioState                 m_iAudioState;              // Audio state
     TInt                        m_iVolume;                  // Audio volume
     TInt                        m_iRepeatMinutes;
+    TBool                       m_bUseSkin;                 // Use skin
     
     MAknsControlContext*        m_pSkinBackground;
 };

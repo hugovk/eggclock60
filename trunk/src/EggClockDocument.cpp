@@ -15,14 +15,14 @@
 // ============================ MEMBER FUNCTIONS ===============================
 CEggClockDocument* CEggClockDocument::NewL( CEikApplication& aApp )
 {
-  CEggClockDocument* self = NewLC( aApp );
+  CEggClockDocument* self(NewLC( aApp ));
   CleanupStack::Pop( self );
   return self;
 }
 
 CEggClockDocument* CEggClockDocument::NewLC( CEikApplication& aApp )
 {
-  CEggClockDocument* self = new ( ELeave ) CEggClockDocument( aApp );
+  CEggClockDocument* self(new ( ELeave ) CEggClockDocument( aApp ));
   CleanupStack::PushL( self );
   self->ConstructL();
   return self;

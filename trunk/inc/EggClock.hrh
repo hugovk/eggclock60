@@ -22,7 +22,12 @@ enum TEggClockIds
   EEggClockCmdNotificationSchemeSilent,
   EEggClockCmdNotificationSchemeSelect,
   EEggClockCmdNotificationRepeat,
+  EEggClockCmdBackground,
+  EEggClockCmdBackgroundSkin,
+  EEggClockCmdBackgroundWhite,
   EEggClockCmdAbout
 };
 
 #endif // __EGGCLOCK_HRH__
+
+// End of file

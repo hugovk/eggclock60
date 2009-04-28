@@ -94,6 +94,12 @@ RESOURCE MENU_PANE r_eggclock_menu
     },
     MENU_ITEM
     {
+      command = EEggClockCmdBackground;
+      cascade = r_eggclock_background_menu;
+      txt = T_BACKGROUND;
+    },
+    MENU_ITEM
+    {
       command = EEggClockCmdAbout;
       txt = T_ABOUT;
     },
@@ -112,6 +118,15 @@ RESOURCE MENU_PANE r_eggclock_notification_menu
     MENU_ITEM { command = EEggClockCmdNotificationSchemeSilent; txt = T_NOTIFICATION_SCHEME_SILENT; },
     MENU_ITEM { command = EEggClockCmdNotificationSchemeSelect; txt = T_NOTIFICATION_SCHEME_SELECT; },
     MENU_ITEM { command = EEggClockCmdNotificationRepeat; txt = T_NOTIFICATION_REPEAT; }
+  };
+}
+
+RESOURCE MENU_PANE r_eggclock_background_menu
+{
+  items =
+  {
+    MENU_ITEM { command = EEggClockCmdBackgroundSkin; txt = T_BACKGROUND_SKIN; },
+    MENU_ITEM { command = EEggClockCmdBackgroundWhite; txt = T_BACKGROUND_WHITE; }
   };
 }
 
