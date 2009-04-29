@@ -386,7 +386,7 @@ void CEggClockAppView::DrawVolumeL(const TRect& /*aRect*/) const
 
 void CEggClockAppView::SizeChanged()
 {
-  DrawDeferred();
+  DrawNow();
 }
 
 TBool CEggClockAppView::StartTimer()
@@ -398,7 +398,7 @@ TBool CEggClockAppView::StartTimer()
   if (m_pTimer && !m_pTimer->IsActive())
   {
     m_pTimer->Start(ONE_SECOND, ONE_SECOND, TCallBack(CEggClockAppView::TimerFired, this));
-    DrawDeferred();
+    DrawNow();
     return ETrue;
   }
   return EFalse;
@@ -419,7 +419,7 @@ TBool CEggClockAppView::StopTimer()
     m_pFilePlayer->Stop();
     m_iAudioState = eAudioReady;
   }
-  DrawDeferred();
+  DrawNow();
   return ETrue;
 }
 
@@ -441,7 +441,7 @@ TBool CEggClockAppView::ResetTimer()
 
   m_iRemainingDuration = m_iTotalDuration;
 
-  DrawDeferred();
+  DrawNow();
   return ETrue;
 }
 
@@ -456,7 +456,7 @@ void CEggClockAppView::SetDuration(TInt n_iDuration)
   if (!IsRunning())
   {
     m_iRemainingDuration = m_iTotalDuration;
-    DrawDeferred();
+    DrawNow();
   }
   
   // Save settings for future
@@ -504,7 +504,7 @@ void CEggClockAppView::DoTimerFired()
     TRAP_IGNORE(PlayNotificationL());
   }
   
-  DrawDeferred();
+  DrawNow();
 }
 
 void CEggClockAppView::PlayNotificationL()
@@ -540,14 +540,14 @@ TInt CEggClockAppView::FlashTimerFired(TAny* aPtr)
 void CEggClockAppView::DoFlashTimerFired()
 {
   m_bFlash = !m_bFlash;
-  DrawDeferred();
+  DrawNow();
 }
 
 void CEggClockAppView::SetSkinBackgroundL(TBool bUseSkin)
 {
   m_bUseSkin = bUseSkin;
 
-  DrawDeferred();
+  DrawNow();
 
   // Save settings for future
   SaveSettingsL();
@@ -597,7 +597,7 @@ void CEggClockAppView::SetRepeatMinutesL(const TInt iMinutes)
 {
   m_iRepeatMinutes = iMinutes;
   
-  DrawDeferred();
+  DrawNow();
   
   // Save settings for future
   SaveSettingsL();
@@ -624,7 +624,7 @@ void CEggClockAppView::ChangeVolume(TInt iStep)
     m_pFilePlayer->SetVolume((m_pFilePlayer->MaxVolume() * m_iVolume) / MAX_VOLUME);
   }
   
-  DrawDeferred();
+  DrawNow();
 
   TRAP_IGNORE(SaveSettingsL());
 }
@@ -652,7 +652,6 @@ void CEggClockAppView::MapcInitComplete(TInt aError, const TTimeIntervalMicroSec
     )
   }
 }
-
 
 void CEggClockAppView::MapcPlayComplete(TInt aError)
 {
