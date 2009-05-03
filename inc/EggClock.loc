@@ -39,7 +39,7 @@ CHARACTER_SET UTF8
 #define T_BACKGROUND_WHITE               "White"
 #define T_ABOUT                          "About"
 // other strings
-#define T_VERSION                        "EggClock v1.5"
+#define T_VERSION                        "EggClock v1.6"
 #define T_OVERTIME                       "Overtime:"
 #define T_SELECT_NOTIFICATION            "Select notification"
 #define T_AUDIO_ERROR                    "Error reading the audio file. No notification will be played"
@@ -71,7 +71,7 @@ CHARACTER_SET UTF8
 #define T_BACKGROUND_WHITE               "White"
 #define T_ABOUT                          "About"
 // other strings
-#define T_VERSION                        "EggClock v1.5"
+#define T_VERSION                        "EggClock v1.6"
 #define T_OVERTIME                       "Overtime:"
 #define T_SELECT_NOTIFICATION            "Select notification"
 #define T_AUDIO_ERROR                    "Error reading the audio file. No notification will be played"
@@ -103,7 +103,7 @@ CHARACTER_SET UTF8
 #define T_BACKGROUND_WHITE               "Bianco"
 #define T_ABOUT                          "Informazioni"
 // other strings
-#define T_VERSION                        "EggClock v1.5"
+#define T_VERSION                        "EggClock v1.6"
 #define T_OVERTIME                       "Extra time:"
 #define T_SELECT_NOTIFICATION            "Scegli notifica"
 #define T_AUDIO_ERROR                    "Errore in lettura del file audio"

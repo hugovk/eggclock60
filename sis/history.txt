@@ -1,5 +1,10 @@
 History of EggTimer
 
+Version 1.6 (03/05/2009)
+--------------------------
+[improv] Added support for touch controls
+[fix]    Fixed issue with volume keys
+
 Version 1.5 (22/04/2009)
 --------------------------
 [improv] Added support for white background

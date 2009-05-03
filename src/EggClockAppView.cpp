@@ -9,13 +9,16 @@
 */
 
 // INCLUDE FILES
-#include <akniconarray.h>     // Icon array
-#include <aknnotewrappers.h>  // Error note
+#include <akniconarray.h>                       // Icon array
+#include <aknnotewrappers.h>                    // Error note
 #include <AknsBasicBackgroundControlContext.h>
-#include <AknsDrawUtils.h>    // Skin support
+#include <AknsDrawUtils.h>                      // Skin support
 #include <coemain.h>
 #include <eikenv.h>
-#include <gulicon.h>          // Icons
+#include <gulicon.h>                            // Icons
+#include <remconinterfaceselector.h>            // CRemConInterfaceSelector
+#include <remconcoreapitarget.h>                // CRemConCoreApiTarget
+#include <touchfeedback.h>                      // Touch feedback
 
 #include "EggClockAppView.h"
 #include <EggClock_numbers_icons.mbg>
@@ -58,6 +61,10 @@ CEggClockAppView* CEggClockAppView::NewLC( const TRect& aRect )
 
 void CEggClockAppView::ConstructL( const TRect& aRect )
 {
+#ifdef  __S60_50__
+  m_bLongTap = EFalse;
+#endif
+
   // Create the timers
   m_pTimer = CPeriodic::NewL(CActive::EPriorityIdle);
   m_pFlashTimer = CPeriodic::NewL(CActive::EPriorityIdle);
@@ -135,6 +142,10 @@ void CEggClockAppView::ConstructL( const TRect& aRect )
     }
   }
   
+  // Object to detect volume keys
+  m_pSelector = CRemConInterfaceSelector::NewL();
+  m_pTarget = CRemConCoreApiTarget::NewL( *m_pSelector, *this ); 
+  m_pSelector->OpenTargetL();
   
   // Create a window for this application view and set the size
   CreateWindowL();
@@ -142,6 +153,21 @@ void CEggClockAppView::ConstructL( const TRect& aRect )
 
   // Skin support
   m_pSkinBackground = CAknsBasicBackgroundControlContext::NewL(KAknsIIDQsnBgAreaMain, Rect(), EFalse);
+
+#ifdef  __S60_50__
+  // In case of touch screen, activate long touch detector
+  if (AknLayoutUtils::PenEnabled())
+  {
+    m_pLongTapDetector = CAknLongTapDetector::NewL( this );
+  }
+  
+  // Touch feedback
+  m_pTouchFeedback = MTouchFeedback::Instance();
+  if (m_pTouchFeedback)
+  {
+    m_pTouchFeedback->SetFeedbackEnabledForThisApp(ETrue);
+  }
+#endif
 
   // Activate the control
   ActivateL();
@@ -227,6 +253,20 @@ CEggClockAppView::~CEggClockAppView()
     delete m_pSkinBackground;
     m_pSkinBackground = NULL;
   }
+  if (m_pSelector)
+  {
+    delete m_pSelector;
+    m_pSelector = NULL;
+  }
+  m_pTarget = NULL;
+#ifdef  __S60_50__
+  if (m_pLongTapDetector)
+  {
+    delete m_pLongTapDetector;
+    m_pLongTapDetector = NULL;
+  }
+  m_pTouchFeedback = NULL;
+#endif
 }
 
 TTypeUid::Ptr CEggClockAppView::MopSupplyObject(TTypeUid aId)
@@ -236,6 +276,128 @@ TTypeUid::Ptr CEggClockAppView::MopSupplyObject(TTypeUid aId)
     return MAknsControlContext::SupplyMopObject(aId, m_pSkinBackground);
   }
   return CCoeControl::MopSupplyObject(aId);
+}
+
+void CEggClockAppView::HandlePointerEventL(const TPointerEvent& aPointerEvent)
+{
+  if(!AknLayoutUtils::PenEnabled())
+  {
+    return;
+  }
+
+  // Pass the pointer event to Long tap detector component
+#ifdef  __S60_50__
+  if (m_pLongTapDetector)
+  {
+    m_pLongTapDetector->PointerEventL(aPointerEvent);
+  }
+#endif
+
+  // Call base class method
+  CCoeControl::HandlePointerEventL(aPointerEvent);
+  
+  // Check if long tap occurred
+#ifdef  __S60_50__
+  if (m_bLongTap)
+  {
+    m_bLongTap = EFalse;
+    return;
+  }
+#endif
+  
+  // On ButtonUp, start/stop the timer
+  if (aPointerEvent.iType == TPointerEvent::EButton1Up)
+  {
+    if (IsRunning())
+    {
+      StopTimer();
+    }
+    else
+    {
+      StartTimer();
+    }
+  }
+  
+  // Touch feedback
+#ifdef  __S60_50__
+  if (aPointerEvent.iType == TPointerEvent::EButton1Down)
+  {
+    if (m_pTouchFeedback)
+    {
+      m_pTouchFeedback->InstantFeedback(ETouchFeedbackBasic);
+    }
+  }
+#endif
+}
+
+void CEggClockAppView::HandleLongTapEventL(const TPoint& /*aPenEventLocation*/, const TPoint& /*aPenEventScreenLocation*/)
+{
+#ifdef  __S60_50__
+  m_bLongTap = ETrue;
+#endif
+  
+  ResetTimer();
+}
+
+TKeyResponse CEggClockAppView::OfferKeyEventL(const TKeyEvent& aKeyEvent, TEventCode /*aType*/)
+{
+  switch(aKeyEvent.iCode)
+  {
+    // Volume up
+    case EKeyRightArrow:
+    case EKeyUpArrow:
+    case EKeyIncVolume:
+      ChangeVolume(1);
+      return EKeyWasConsumed;
+    // Volume down
+    case EKeyLeftArrow:
+    case EKeyDownArrow:
+    case EKeyDecVolume:
+      ChangeVolume(-1);
+      return EKeyWasConsumed;
+    // Reset
+    case EKeyBackspace:
+      ResetTimer();
+      return EKeyWasConsumed;
+    // Start and stop
+    case EKeyDevice3:
+    case EKeyEnter:
+      if (IsRunning())
+      {
+        StopTimer();
+      }
+      else
+      {
+        StartTimer();
+      }
+      return EKeyWasConsumed;
+    // Red key to background if running
+    case EKeyNo:
+      if (IsRunning())
+      {
+        CEikonEnv::Static()->RootWin().SetOrdinalPosition(-1);
+      }
+      return EKeyWasConsumed;    
+    default:
+      break;
+  }
+  return EKeyWasNotConsumed;
+}
+
+void CEggClockAppView::MrccatoCommand(TRemConCoreApiOperationId aOperationId, TRemConCoreApiButtonAction /*aButtonAct*/)
+{
+  switch(aOperationId)
+  {
+    case ERemConCoreApiVolumeDown: 
+      ChangeVolume(-1);
+      break;
+    case ERemConCoreApiVolumeUp:
+      ChangeVolume(1);
+      break;
+    default:
+      // Nothing to do
+      break;
+  }
 }
 
 void CEggClockAppView::Draw(const TRect& aRect) const

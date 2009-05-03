@@ -30,6 +30,9 @@ void CEggClockAppUi::ConstructL()
 
   // Create view object
   m_pAppContainer = CEggClockAppView::NewL(ClientRect());
+  
+  // Add container to stack to receive key events
+  AddToStackL(m_pAppContainer);
 }
 
 CEggClockAppUi::CEggClockAppUi()
@@ -41,6 +44,9 @@ CEggClockAppUi::~CEggClockAppUi()
 {
   if (m_pAppContainer)
   {
+    // Remove container from stack as first step
+    RemoveFromStack(m_pAppContainer);
+    
     delete m_pAppContainer;
     m_pAppContainer = NULL;
   }
@@ -224,62 +230,11 @@ void CEggClockAppUi::HandleCommandL(TInt aCommand)
     }
 }
 
-TKeyResponse CEggClockAppUi::HandleKeyEventL(const TKeyEvent& aKeyEvent,TEventCode /*aType*/)
+TKeyResponse CEggClockAppUi::HandleKeyEventL(const TKeyEvent& /*aKeyEvent*/, TEventCode /*aType*/)
 {
-  switch(aKeyEvent.iCode)
-  {
-    // Volume up
-    case EKeyRightArrow:
-    case EKeyUpArrow:
-      if (m_pAppContainer)
-      {
-        m_pAppContainer->ChangeVolume(1);
-      }
-      return EKeyWasConsumed;
-    // Volume down
-    case EKeyLeftArrow:
-    case EKeyDownArrow:
-      if (m_pAppContainer)
-      {
-        m_pAppContainer->ChangeVolume(-1);
-      }
-      return EKeyWasConsumed;
-    // Reset
-    case EKeyBackspace:
-      if (m_pAppContainer)
-      {
-        m_pAppContainer->ResetTimer();
-      }
-      return EKeyWasConsumed;
-    // Start and stop
-    case EKeyDevice3:
-    case EKeyEnter:
-      if (m_pAppContainer)
-      {
-        if (m_pAppContainer->IsRunning())
-        {
-          m_pAppContainer->StopTimer();
-        }
-        else
-        {
-          m_pAppContainer->StartTimer();
-        }
-      }
-      return EKeyWasConsumed;
-    // Red key to background if running
-    case EKeyNo:
-      if (m_pAppContainer)
-      {
-        if (m_pAppContainer->IsRunning())
-        {
-          CEikonEnv::Static()->RootWin().SetOrdinalPosition(-1);
-        }
-      }
-      return EKeyWasConsumed;    
-    default:
-      break;
-  }
-  return EKeyWasNotConsumed;
+  // Key events are handled directly in the control, so no need
+  // to process them here
+  return EKeyWasNotConsumed;  
 }
 
 void CEggClockAppUi::HandleWsEventL(const TWsEvent& aEvent, CCoeControl* aDestination)
