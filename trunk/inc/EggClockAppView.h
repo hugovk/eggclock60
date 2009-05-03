@@ -13,9 +13,12 @@
 
 // INCLUDES
 #include <coecntrl.h>
-#include <drmaudiosampleplayer.h>  // MDrmAudioPlayerCallback
-#include <gulicon.h>               // Icons
-#include <MdaAudioSamplePlayer.h>  // MMdaAudioPlayerCallback
+#include <drmaudiosampleplayer.h>         // MDrmAudioPlayerCallback
+#include <gulicon.h>                      // Icons
+#include <MdaAudioSamplePlayer.h>         // MMdaAudioPlayerCallback
+#include <aknlongtapdetector.h>           // MAknLongTapDetectorCallBack
+#include <remconcoreapitargetobserver.h>  // MRemConCoreApiTargetObserver
+
 
 #define DRM_PLAYER
 
@@ -31,9 +34,14 @@ const TInt INFINITE_MINUTES = 0xFF;
 
 // Forward declaration
 class MAknsControlContext;
+class CRemConInterfaceSelector;
+class CRemConCoreApiTarget;
+class MTouchFeedback;
+
 
 // CLASS DECLARATION
-class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, public MDrmAudioPlayerCallback
+class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, public MDrmAudioPlayerCallback,
+                         public MAknLongTapDetectorCallBack, public MRemConCoreApiTargetObserver
 {
   public: // Constructors
     static CEggClockAppView* NewL( const TRect& aRect );
@@ -44,6 +52,8 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
     void Draw( const TRect& aRect ) const;
     virtual void SizeChanged();
     virtual TTypeUid::Ptr MopSupplyObject(TTypeUid aId);
+    virtual void HandlePointerEventL(const TPointerEvent& aPointerEvent);
+    virtual TKeyResponse OfferKeyEventL(const TKeyEvent& aKeyEvent, TEventCode aType);
 
   public: // Functions from MMdaAudioPlayerCallback
     virtual void MapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
@@ -52,6 +62,12 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
   public: // Functions from MDrmAudioPlayerCallback
     virtual void MdapcInitComplete(TInt aError, const TTimeIntervalMicroSeconds &aDuration);
     virtual void MdapcPlayComplete(TInt aError);
+  
+  public: // Function from MAknLongTapDetectorCallBack
+    virtual void HandleLongTapEventL(const TPoint &aPenEventLocation, const TPoint &aPenEventScreenLocation);
+
+  public: // Function from MRemConCoreApiTargetObserver
+    virtual void MrccatoCommand(TRemConCoreApiOperationId aOperationId, TRemConCoreApiButtonAction aButtonAct);
 
   public: // New methods
     TInt  GetDuration();
@@ -111,10 +127,19 @@ class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, pub
 #endif
     eAudioState                 m_iAudioState;              // Audio state
     TInt                        m_iVolume;                  // Audio volume
-    TInt                        m_iRepeatMinutes;
+    TInt                        m_iRepeatMinutes;           // Repeat every X minutes
     TBool                       m_bUseSkin;                 // Use skin
     
-    MAknsControlContext*        m_pSkinBackground;
+    MAknsControlContext*        m_pSkinBackground;          // Skin background
+
+    CRemConInterfaceSelector*   m_pSelector;                // Used to detect volume keys
+    CRemConCoreApiTarget*       m_pTarget;                  // Used to detect volume keys
+
+#ifdef  __S60_50__
+    CAknLongTapDetector*        m_pLongTapDetector;         // Long tap detector
+    TBool                       m_bLongTap;                 // Bool to mark long tap
+    MTouchFeedback*             m_pTouchFeedback;           // Touch feedback
+#endif
 };
 
 #endif // __EGGCLOCKAPPVIEW_H__
