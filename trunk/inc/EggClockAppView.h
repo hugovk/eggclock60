@@ -1,6 +1,6 @@
 /*
 ============================================================================
- Name        : EggClockView.h
+ Name        : EggClockAppView.h
  Author      : Michele Berionne
  Version     :
  Copyright   : 
@@ -16,9 +16,10 @@
 #include <drmaudiosampleplayer.h>         // MDrmAudioPlayerCallback
 #include <gulicon.h>                      // Icons
 #include <MdaAudioSamplePlayer.h>         // MMdaAudioPlayerCallback
+#ifdef __S60_50__
 #include <aknlongtapdetector.h>           // MAknLongTapDetectorCallBack
+#endif
 #include <remconcoreapitargetobserver.h>  // MRemConCoreApiTargetObserver
-
 
 #define DRM_PLAYER
 
@@ -30,7 +31,7 @@ enum eAudioState
   eAudioPlaying
 };
 
-const TInt INFINITE_MINUTES = 0xFF;
+const TInt INFINITE_MINUTES(0xFF);
 
 // Forward declaration
 class MAknsControlContext;
@@ -41,15 +42,18 @@ class MTouchFeedback;
 
 // CLASS DECLARATION
 class CEggClockAppView : public CCoeControl, public MMdaAudioPlayerCallback, public MDrmAudioPlayerCallback,
-                         public MAknLongTapDetectorCallBack, public MRemConCoreApiTargetObserver
+#ifdef __S60_50__
+                         public MAknLongTapDetectorCallBack, 
+#endif
+						 public MRemConCoreApiTargetObserver
 {
   public: // Constructors
-    static CEggClockAppView* NewL( const TRect& aRect );
-    static CEggClockAppView* NewLC( const TRect& aRect );
+    static CEggClockAppView* NewL(const TRect& aRect);
+    static CEggClockAppView* NewLC(const TRect& aRect);
     virtual ~CEggClockAppView();
 
   public: // Functions from CCoeControl
-    void Draw( const TRect& aRect ) const;
+    void Draw(const TRect& aRect) const;
     virtual void SizeChanged();
     virtual TTypeUid::Ptr MopSupplyObject(TTypeUid aId);
     virtual void HandlePointerEventL(const TPointerEvent& aPointerEvent);

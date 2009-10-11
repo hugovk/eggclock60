@@ -1,10 +1,10 @@
 /*
 ============================================================================
- Name        : client.rss
+ Name        : bld.inf
  Author      : 
  Version     :
  Copyright   : 
- Description : Main application class
+ Description : Build info
 ============================================================================
 */
 
@@ -14,3 +14,5 @@ WINSCW ARMV5 GCCE
 PRJ_MMPFILES
 gnumakefile icons.mk
 EggClock.mmp
+
+// End of file

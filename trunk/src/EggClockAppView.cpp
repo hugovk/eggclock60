@@ -1,6 +1,6 @@
 /*
 ============================================================================
- Name        : EggClockView.cpp
+ Name        : EggClockAppView.cpp
  Author      : Michele Berionne
  Version     :
  Copyright   : 
@@ -18,7 +18,9 @@
 #include <gulicon.h>                            // Icons
 #include <remconinterfaceselector.h>            // CRemConInterfaceSelector
 #include <remconcoreapitarget.h>                // CRemConCoreApiTarget
+#ifdef __S60_50__
 #include <touchfeedback.h>                      // Touch feedback
+#endif
 
 #include "EggClockAppView.h"
 #include <EggClock_numbers_icons.mbg>
@@ -158,7 +160,7 @@ void CEggClockAppView::ConstructL( const TRect& aRect )
   // In case of touch screen, activate long touch detector
   if (AknLayoutUtils::PenEnabled())
   {
-    m_pLongTapDetector = CAknLongTapDetector::NewL( this );
+    m_pLongTapDetector = CAknLongTapDetector::NewL(this);
   }
   
   // Touch feedback
