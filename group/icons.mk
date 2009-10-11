@@ -1,6 +1,6 @@
 # ==============================================================================
-#  Name        : Icons_scalable_dc.mk
-#  Part of     : Chat
+#  Name        : Icons.mk
+#  Part of     : Egg Clock
 #  Description : This is file for creating .mif file (scalable icon)
 #  Version     : 
 #
@@ -44,3 +44,5 @@ RELEASABLES :
 	@echo $(ICONTARGETFILENAME)
 
 FINAL : do_nothing
+
+# End of file

@@ -1,12 +1,15 @@
 /*
 ============================================================================
- Name        : EggClock.rss
+ Name        : EggClock.mmp
  Author      : Michele Berionne
  Version     :
  Copyright   : 
  Description : Project specification file for client
 ============================================================================
 */
+
+// Comment this out to use a 3rd edition build
+MACRO FIFTH_EDITION
 
 TARGET            EggClock.exe
 TARGETTYPE        exe
@@ -65,20 +68,35 @@ SYSTEMINCLUDE   \epoc32\include
 SYSTEMINCLUDE   \epoc32\include\mmf
 SYSTEMINCLUDE   \epoc32\include\mmf\plugin
 
-LIBRARY        euser.lib apparc.lib cone.lib
-LIBRARY        eikcore.lib avkon.lib
-LIBRARY        eikcoctl.lib bafl.lib efsrv.lib 
-LIBRARY        estlib.lib egul.lib aknicon.lib fbscli.lib
-LIBRARY        mediaclientaudio.lib DrmAudioPlayUtility.lib 
-LIBRARY        PlatformEnv.lib CommonDialogs.lib aknskins.lib MGFetch.lib
+LIBRARY        aknicon.lib
+LIBRARY        aknskins.lib
+LIBRARY        apparc.lib
+LIBRARY        avkon.lib
+LIBRARY        bafl.lib 
+LIBRARY        CommonDialogs.lib
+LIBRARY        cone.lib
+LIBRARY        DrmAudioPlayUtility.lib 
+LIBRARY        efsrv.lib 
+LIBRARY        egul.lib
+LIBRARY        eikcoctl.lib
+LIBRARY        eikcore.lib
+LIBRARY        estlib.lib
+LIBRARY        euser.lib
+LIBRARY        fbscli.lib
+LIBRARY        mediaclientaudio.lib 
+LIBRARY        MGFetch.lib
+LIBRARY        PlatformEnv.lib
+LIBRARY        remconcoreapi.lib
+LIBRARY        remconinterfacebase.lib
 LIBRARY        ws32.lib
-LIBRARY        remconcoreapi.lib remconinterfacebase.lib
-LIBRARY        touchfeedback.lib
 
+#ifdef FIFTH_EDITION
+LIBRARY        touchfeedback.lib
+#endif
 
 LANG 01 02 05
 
 VENDORID        0
 CAPABILITY      ReadUserData WriteUserData LocalServices UserEnvironment
-// End of File
 
+// End of File

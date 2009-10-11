@@ -1,6 +1,6 @@
 /*
 ============================================================================
- Name        : client.cpp
+ Name        : EggClock.cpp
  Author      : Michele Berionne
  Version     :
  Copyright   : 
