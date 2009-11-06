@@ -1,5 +1,10 @@
 History of EggTimer
 
+Version 1.7 (06/11/2009)
+--------------------------
+[improv] Added egg application icon
+[fix] Added macro to switch between 3rd and 5th edition builds
+
 Version 1.6 (03/05/2009)
 --------------------------
 [improv] Added support for touch controls
