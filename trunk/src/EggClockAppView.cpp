@@ -347,13 +347,11 @@ TKeyResponse CEggClockAppView::OfferKeyEventL(const TKeyEvent& aKeyEvent, TEvent
   {
     // Volume up
     case EKeyRightArrow:
-    case EKeyUpArrow:
     case EKeyIncVolume:
       ChangeVolume(1);
       return EKeyWasConsumed;
     // Volume down
     case EKeyLeftArrow:
-    case EKeyDownArrow:
     case EKeyDecVolume:
       ChangeVolume(-1);
       return EKeyWasConsumed;
@@ -379,7 +377,57 @@ TKeyResponse CEggClockAppView::OfferKeyEventL(const TKeyEvent& aKeyEvent, TEvent
       {
         CEikonEnv::Static()->RootWin().SetOrdinalPosition(-1);
       }
-      return EKeyWasConsumed;    
+      return EKeyWasConsumed;
+    case '1':
+      SetDuration(1 * 60);
+      break;
+    case '2':
+      SetDuration(2 * 60);
+      break;
+    case '3':
+      SetDuration(3 * 60);
+      break;
+    case '4':
+      SetDuration(4 * 60);
+      break;
+    case '5':
+      SetDuration(5 * 60);
+      break;
+    case '6':
+      SetDuration(6 * 60);
+      break;
+    case '7':
+      SetDuration(7 * 60);
+      break;
+    case '8':
+      SetDuration(8 * 60);
+      break;
+    case '9':
+      SetDuration(9 * 60);
+      break;
+    case '0':
+      SetDuration(10 * 60);
+      break;
+    case EKeyDownArrow:
+    case '*':
+	  {
+      TInt duration(GetDuration() - 60);
+      if (duration > 0)
+		{
+		SetDuration(duration);
+		}
+	  }
+      break;
+    case EKeyUpArrow:
+    case '#':
+	  {
+	  TInt duration(GetDuration() + 60);
+	  TInt maxDuration((100 * 60) - 1); // 99m:59s
+	  (duration < maxDuration) ?
+		SetDuration(duration) :
+		SetDuration(maxDuration);
+	  }
+      break;
     default:
       break;
   }
