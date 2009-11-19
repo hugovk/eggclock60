@@ -721,6 +721,9 @@ void CEggClockAppView::DoTimerFired()
 
 void CEggClockAppView::PlayNotificationL()
 {
+  // Turn the screensaver off and backlight on
+  User::ResetInactivityTime();
+  
   // Start flashing (if it is not already)
   if (m_pFlashTimer && !m_pFlashTimer->IsActive())
   {
