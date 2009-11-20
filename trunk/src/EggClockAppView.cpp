@@ -380,54 +380,59 @@ TKeyResponse CEggClockAppView::OfferKeyEventL(const TKeyEvent& aKeyEvent, TEvent
       return EKeyWasConsumed;
     case '1':
       SetDuration(1 * 60);
-      break;
+      return EKeyWasConsumed;
     case '2':
       SetDuration(2 * 60);
-      break;
+      return EKeyWasConsumed;
     case '3':
       SetDuration(3 * 60);
-      break;
+      return EKeyWasConsumed;
     case '4':
       SetDuration(4 * 60);
-      break;
+      return EKeyWasConsumed;
     case '5':
       SetDuration(5 * 60);
-      break;
+      return EKeyWasConsumed;
     case '6':
       SetDuration(6 * 60);
-      break;
+      return EKeyWasConsumed;
     case '7':
       SetDuration(7 * 60);
-      break;
+      return EKeyWasConsumed;
     case '8':
       SetDuration(8 * 60);
-      break;
+      return EKeyWasConsumed;
     case '9':
       SetDuration(9 * 60);
-      break;
+      return EKeyWasConsumed;
     case '0':
       SetDuration(10 * 60);
-      break;
+      return EKeyWasConsumed;
     case EKeyDownArrow:
     case '*':
-	  {
+    {
       TInt duration(GetDuration() - 60);
       if (duration > 0)
-		{
-		SetDuration(duration);
-		}
-	  }
-      break;
+      {
+        SetDuration(duration);
+      }
+      return EKeyWasConsumed;
+    }
     case EKeyUpArrow:
     case '#':
-	  {
-	  TInt duration(GetDuration() + 60);
-	  TInt maxDuration((100 * 60) - 1); // 99m:59s
-	  (duration < maxDuration) ?
-		SetDuration(duration) :
-		SetDuration(maxDuration);
-	  }
-      break;
+    {
+      TInt duration(GetDuration() + 60);
+      TInt maxDuration((100 * 60) - 1); // 99m:59s
+      if (duration < maxDuration)
+      {
+        SetDuration(duration);
+      }
+      else
+      {
+        SetDuration(maxDuration);
+      }
+      return EKeyWasConsumed;
+    }
     default:
       break;
   }
@@ -664,15 +669,15 @@ TInt CEggClockAppView::GetDuration()
 
 void CEggClockAppView::SetDuration(TInt n_iDuration)
 {
-  m_iTotalDuration = n_iDuration;
   if (!IsRunning())
   {
+    m_iTotalDuration = n_iDuration;
     m_iRemainingDuration = m_iTotalDuration;
     DrawNow();
-  }
   
-  // Save settings for future
-  TRAP_IGNORE(SaveSettingsL());
+    // Save settings for future
+    TRAP_IGNORE(SaveSettingsL());
+  }
 }
 
 TBool CEggClockAppView::IsRunning()
