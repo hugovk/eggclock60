@@ -1,5 +1,10 @@
 History of EggTimer
 
+Version 1.8 (30/11/2009)
+--------------------------
+[improv] Issue 10: Quick entry of duration using 0-9, *, # and up and down arrow keys
+[improv] Issue 11: Turn screensaver off and backlight on when timer goes off
+
 Version 1.7 (06/11/2009)
 --------------------------
 [improv] Added egg application icon
