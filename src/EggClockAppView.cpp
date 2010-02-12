@@ -519,7 +519,7 @@ void CEggClockAppView::DrawLargeNumberL(const TRect& /*aRect*/, TInt iNumber) co
   TInt iYPosition(0);
   for (TInt i(0); i < 5; ++i)
   {
-    iYPosition = (ppDigitBitmap[0]->SizeInPixels().iHeight > iYPosition) ? ppDigitBitmap[0]->SizeInPixels().iHeight : iYPosition;
+    iYPosition = (ppDigitBitmap[i]->SizeInPixels().iHeight > iYPosition) ? ppDigitBitmap[i]->SizeInPixels().iHeight : iYPosition;
   }
   iYPosition = (iScreenSize.iHeight - (iYPosition * iZoomFactor / 100)) / 2;
 
