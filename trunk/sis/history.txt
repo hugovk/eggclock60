@@ -1,5 +1,9 @@
 History of EggTimer
 
+Version 1.9 (12/04/2010)
+--------------------------
+[fix] Issue 16: Re-self-signed with a new certificate valid for 10 years.
+
 Version 1.8 (30/11/2009)
 --------------------------
 [improv] Issue 10: Quick entry of duration using 0-9, *, # and up and down arrow keys
