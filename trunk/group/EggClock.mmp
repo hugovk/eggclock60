@@ -9,7 +9,7 @@
 */
 
 // Comment this out to use a 3rd edition build
-MACRO FIFTH_EDITION
+#define FIFTH_EDITION
 
 TARGET            EggClock.exe
 TARGETTYPE        exe
@@ -97,6 +97,6 @@ LIBRARY        touchfeedback.lib
 LANG 01 02 05
 
 VENDORID        0
-CAPABILITY      ReadUserData WriteUserData LocalServices UserEnvironment
+//CAPABILITY      ReadUserData WriteUserData LocalServices UserEnvironment
 
 // End of File
